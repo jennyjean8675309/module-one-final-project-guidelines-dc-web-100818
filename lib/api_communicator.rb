@@ -1,4 +1,4 @@
-require 'rest_client'
+require 'rest-client'
 require 'JSON'
 require 'pry'
 
@@ -8,9 +8,6 @@ def get_trivia_hash
 
   enter_film_q = RestClient.get('https://opentdb.com/api.php?amount=25&category=11&type=multiple')
   enter_film_parsed = JSON.parse(enter_film_q)
-
-  art_q = RestClient.get('https://opentdb.com/api.php?amount=25&category=25&type=multiple')
-  art_q_parsed = JSON.parse(art_q)
 
   sc_and_na_q = RestClient.get('https://opentdb.com/api.php?amount=25&category=17&type=multiple')
   sc_and_na_q_parsed = JSON.parse(sc_and_na_q)
@@ -24,7 +21,7 @@ def get_trivia_hash
   history_q = RestClient.get('https://opentdb.com/api.php?amount=25&category=23&type=multiple')
   history_q_parsed = JSON.parse(history_q)
 
-  all_APIs = [general_knowledge_parsed, enter_film_parsed, art_q_parsed, sc_and_na_q_parsed, geography_q_parsed, enter_books_q_parsed, history_q_parsed]
+  all_APIs = [general_knowledge_parsed, enter_film_parsed, sc_and_na_q_parsed, geography_q_parsed, enter_books_q_parsed, history_q_parsed]
   all_APIs.collect do |question_hash|
     question_hash["results"]
   end.flatten
@@ -32,5 +29,54 @@ end
 
 get_trivia_hash
 
-  binding.pry
+def create_categories
+  get_trivia_hash.collect do |question_hash|
+    question_hash["category"]
+  end.uniq.each do |cat|
+    Category.create(name: cat)
+  end
+end
+
+def connect_category_to_instance
+  {
+    "General Knowledge" => Category.all.find{|cat| cat.name == "General Knowledge"},
+    "Entertainment: Film" => Category.all.find{|cat| cat.name == "Entertainment: Film"},
+    "Science & Nature" => Category.all.find{|cat| cat.name == "Science & Nature"},
+    "Geography" => Category.all.find{|cat| cat.name == "Geography"},
+    "Entertainment: Books" => Category.all.find{|cat| cat.name == "Entertainment: Books"},
+    "History" => Category.all.find{|cat| cat.name == "History"}}
+end
+
+def create_questions
+  get_trivia_hash.each do |question_hash|
+    Question.create(question: question_hash["question"], category: connect_category_to_instance[question_hash["category"]])
+  end
+end
+
+# [{"category"=>"General Knowledge",
+#     "type"=>"multiple",
+#     "difficulty"=>"easy",
+#     "question"=>"What is the most common surname Wales?",
+#     "correct_answer"=>"Jones",
+#     "incorrect_answers"=>["Williams", "Davies", "Evans"]},
+
+def find_questions(string)
+  Question.all.find_by(question: string)
+end
+
+
+def create_correct_choices
+  get_trivia_hash.each do |question_hash|
+    Choice.create name: question_hash["correct_answer"], correct: true, question: find_questions(question_hash["question"])
+  end
+end
+
+def create_incorrect_choices
+  get_trivia_hash.each do |question_hash|
+    question_hash["incorrect_answers"].each do |ans|
+      Choice.create(name: ans, correct: false, question: (Question.all.find {|quest| quest.question == question_hash["question"]}))
+    end
+  end
+end
+
 0
