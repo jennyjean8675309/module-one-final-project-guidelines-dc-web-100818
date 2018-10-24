@@ -30,8 +30,12 @@ class Question < ActiveRecord::Base
     self.all.select { |q| q.category.name == input }
   end
 
-  def self.give_user_question(input)
-    q = self.questions_by_category(input).sample
+  def self.questions_by_difficulty(input, difficulty)
+    self.questions_by_category(input).select { |ques| ques.difficulty == difficulty}
+  end
+
+  def self.give_user_question(input, difficulty)
+    q = self.questions_by_difficulty(input, difficulty).sample
     puts q.question
     puts q.format_choices
     q
