@@ -27,10 +27,10 @@ def get_trivia_hash
   end.flatten
 end
 
-get_trivia_hash
+TRIVIA = get_trivia_hash
 
 def create_categories
-  get_trivia_hash.collect do |question_hash|
+  TRIVIA.collect do |question_hash|
     question_hash["category"]
   end.uniq.each do |cat|
     Category.create(name: cat)
@@ -48,8 +48,8 @@ def connect_category_to_instance
 end
 
 def create_questions
-  get_trivia_hash.each do |question_hash|
-    Question.create(question: question_hash["question"], category: connect_category_to_instance[question_hash["category"]])
+  TRIVIA.each do |question_hash|
+    Question.find_or_create_by(question: question_hash["question"], category: connect_category_to_instance[question_hash["category"]], difficulty: question_hash["difficulty"])
   end
 end
 
@@ -66,13 +66,14 @@ end
 
 
 def create_correct_choices
-  get_trivia_hash.each do |question_hash|
-    Choice.create name: question_hash["correct_answer"], correct: true, question: find_questions(question_hash["question"])
+  TRIVIA.each do |question_hash|
+    my_quest = find_questions(question_hash["question"])
+    Choice.find_or_create_by name: question_hash["correct_answer"], correct: true, question: my_quest
   end
 end
 
 def create_incorrect_choices
-  get_trivia_hash.each do |question_hash|
+  TRIVIA.each do |question_hash|
     question_hash["incorrect_answers"].each do |ans|
       Choice.create(name: ans, correct: false, question: (Question.all.find {|quest| quest.question == question_hash["question"]}))
     end

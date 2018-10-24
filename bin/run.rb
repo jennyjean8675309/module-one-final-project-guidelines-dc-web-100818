@@ -17,13 +17,7 @@ puts "Hi #{user_name}, choose a category:"
 Category.output_categories
 selected_category = gets.chomp
 
-
-q1 = Question.choose_question(selected_category)
-Question.give_user_question(selected_category)
-# binding.pry
-q1.format_choices
-
-
+q1 = Question.give_user_question(selected_category)
 
 user_answer = gets.chomp
 uq1 = UserQuestion.create(user: user1, question: q1)

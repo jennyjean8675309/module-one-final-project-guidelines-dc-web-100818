@@ -31,12 +31,17 @@ class Question < ActiveRecord::Base
   end
 
   def self.give_user_question(input)
-    puts self.choose_question(input).question
+    q = self.questions_by_category(input).sample
+    puts q.question
+    puts q.format_choices
+    q
   end
 
-  def self.choose_question(input)
-    self.questions_by_category(input).sample
-  end
+
+
+
+
+
   # @@all = []
 
   #def self.create_questions
