@@ -19,6 +19,7 @@ class TriviaGame
     selected_category = gets.chomp
     q = Question.give_user_question(selected_category, @difficulty)
     @uq = UserQuestion.create(user: @user, question: q)
+    @user.user_questions << @uq
   end
 
   def user
@@ -37,22 +38,34 @@ class TriviaGame
     end
   end
 
-  def check_score
-    if @user.score >= 3 && @user.score < 6
+  def advance_user
+    if @user.score >= 1 && @user.score < 2
       @difficulty = "medium"
-    elsif @user.score >=6 && @user.score < 9
+    elsif @user.score >=2 && @user.score < 3
       @difficulty = "hard"
-    elsif @user.score >=9
-      return "You won!"
+    end
+  end
+
+  def over?
+    if @user.score == 3
+      puts "Congratulations! You won!"
+      true
+      binding.pry
+    elsif @user.user_questions.length == 4
+      puts "Sorry, game over."
+      true
+    else
+      false
     end
   end
 
   def round_loop
-    check_score
-    get_category
-    begin_round
-    validate_answer
-    round_loop
+    while over? != true
+      advance_user
+      begin_round
+      validate_answer
+      round_loop
+    end
   end
 
   def play

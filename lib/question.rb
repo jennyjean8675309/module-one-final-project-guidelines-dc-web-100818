@@ -37,24 +37,9 @@ class Question < ActiveRecord::Base
   def self.give_user_question(input, difficulty)
     q = self.questions_by_difficulty(input, difficulty).sample
     puts q.question
-    puts q.format_choices
+    puts q.format_choice
     q
   end
-
-
-
-
-
-
-  # @@all = []
-
-  #def self.create_questions
-    #get_trivia_hash.each do |question_hash|
-      #question_hash = Question.new(question: , category: )
-      #@@all << question_hash
-    #end
-    #@@all
-  #end
 end
 
 0
