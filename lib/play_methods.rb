@@ -12,14 +12,19 @@ class TriviaGame
   def get_category
     puts "Hi #{@user.name}! Please choose a category:"
     Category.output_categories
+    @selected_category = gets.chomp
   end
 
   def begin_round
-    get_category
-    selected_category = gets.chomp
-    q = Question.give_user_question(selected_category, @difficulty)
-    @uq = UserQuestion.create(user: @user, question: q)
-    @user.user_questions << @uq
+      q = Question.give_user_question(@selected_category, @difficulty)
+    if @user.questions.include?(q)
+      begin_round
+    else
+      puts q.question
+      puts q.format_choices
+      @uq = UserQuestion.create(user: @user, question: q)
+      @user.user_questions << @uq
+    end
   end
 
   def user
@@ -46,25 +51,39 @@ class TriviaGame
     end
   end
 
+  def won?
+    @user.score == 3
+  end
+
+  def lost?
+    @user.user_questions.length == 4
+  end
+
   def over?
-    if @user.score == 3
-      puts "Congratulations! You won!"
-      true
-      binding.pry
-    elsif @user.user_questions.length == 4
-      puts "Sorry, game over."
-      true
-    else
-      false
-    end
+    won? || lost?
   end
 
   def round_loop
     while over? != true
       advance_user
+      get_category
       begin_round
       validate_answer
       round_loop
+    end
+    if won?
+      puts "Congratulations! You won!"
+    elsif lost?
+      puts "Sorry, game over."
+    end
+    leaderboard
+  end
+
+  def leaderboard
+    puts "TRIVIA GAME LEADERBOARD:"
+    leaders = User.all.max_by(3) { |user| user.score }
+    leaders.each do |user|
+      puts "#{user.name}"
     end
   end
 

@@ -11,11 +11,17 @@ class Question < ActiveRecord::Base
     self.all.sample
   end
 
+  def shuffle_choices
+    shuffled_choices = self.choices.sort_by { rand }
+    self.choices = shuffled_choices
+    self.save
+  end
+
   def format_choices
-      puts "A. #{self.choices[0].name}"
-      puts "B. #{self.choices[1].name}"
-      puts "C. #{self.choices[2].name}"
-      puts "D. #{self.choices[3].name}"
+    puts "A. #{self.choices[0].name}"
+    puts "B. #{self.choices[1].name}"
+    puts "C. #{self.choices[2].name}"
+    puts "D. #{self.choices[3].name}"
   end
 
   def connect_letter_to_choice
@@ -35,9 +41,8 @@ class Question < ActiveRecord::Base
   end
 
   def self.give_user_question(input, difficulty)
-    q = self.questions_by_difficulty(input, difficulty).sample
-    puts q.question
-    puts q.format_choice
+    q = self.questions_by_difficulty(input,difficulty).sample
+    q.shuffle_choices
     q
   end
 end
