@@ -12,7 +12,18 @@ class TriviaGame
   def get_category
     puts "Hi #{@user.name}! Please choose a category:"
     Category.output_categories
-    @selected_category = gets.chomp
+  end
+
+  def validate_category
+    get_category
+    @selected_category = gets.chomp.downcase
+    edged = Category.all.collect do |cat| cat.name.downcase end
+    if edged.include?(@selected_category)
+      begin_round
+    else
+      puts "Sorry, that's not a valid choice"
+      validate_category
+    end
   end
 
   def begin_round
@@ -20,11 +31,11 @@ class TriviaGame
     if @user.questions.include?(q)
       begin_round
     else
+      @uq = UserQuestion.create(user: @user, question: q)
+      @user.user_questions << @uq
       puts q.question
       q.connect_letter_to_choice
       puts q.format_choices
-      @uq = UserQuestion.create(user: @user, question: q)
-      @user.user_questions << @uq
     end
   end
 
@@ -67,8 +78,7 @@ class TriviaGame
   def round_loop
     while over? != true
       advance_user
-      get_category
-      begin_round
+      validate_category
       validate_answer
       round_loop
     end

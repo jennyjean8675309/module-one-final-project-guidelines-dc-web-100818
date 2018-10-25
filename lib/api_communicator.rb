@@ -53,13 +53,6 @@ def create_questions
   end
 end
 
-# [{"category"=>"General Knowledge",
-#     "type"=>"multiple",
-#     "difficulty"=>"easy",
-#     "question"=>"What is the most common surname Wales?",
-#     "correct_answer"=>"Jones",
-#     "incorrect_answers"=>["Williams", "Davies", "Evans"]},
-
 def find_questions(string)
   Question.all.find_by(question: string)
 end

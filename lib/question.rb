@@ -40,7 +40,7 @@ class Question < ActiveRecord::Base
   end
 
   def self.questions_by_category(input)
-    self.all.select { |q| q.category.name == input }
+    self.all.select { |q| q.category.name.downcase == input }
   end
 
   def self.questions_by_difficulty(input, difficulty)
