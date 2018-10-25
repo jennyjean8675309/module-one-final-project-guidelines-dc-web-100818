@@ -76,25 +76,26 @@ class TriviaGame
   end
 
   def round_loop
+    font = TTY::Font.new(:doom)
     while over? != true
       advance_user
       validate_category
       validate_answer
-      round_loop
     end
     if won?
-      puts "Congratulations! You won!"
+      puts font.write("Congrats! You Won!")
     elsif lost?
-      puts "Sorry, game over."
+      puts font.write("Sorry, Game Over.")
     end
     leaderboard
   end
 
   def leaderboard
-    puts "TRIVIA GAME LEADERBOARD:"
+    font = TTY::Font.new(:doom)
+    puts font.write("TRIVIA GAME LEADERBOARD:")
     leaders = User.all.max_by(3) { |user| user.score }
     leaders.each do |user|
-      puts "#{user.name}"
+      puts font.write("#{user.name}")
     end
   end
 

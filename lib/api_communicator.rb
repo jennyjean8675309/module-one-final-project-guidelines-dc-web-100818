@@ -57,7 +57,6 @@ def find_questions(string)
   Question.all.find_by(question: string)
 end
 
-
 def create_correct_choices
   TRIVIA.each do |question_hash|
     my_quest = find_questions(question_hash["question"])
