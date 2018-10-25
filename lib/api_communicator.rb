@@ -71,5 +71,3 @@ def create_incorrect_choices
     end
   end
 end
-
-0

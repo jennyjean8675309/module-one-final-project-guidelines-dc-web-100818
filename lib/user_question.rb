@@ -1,4 +1,5 @@
 require 'pry'
+require 'colorize'
 
 class UserQuestion < ActiveRecord::Base
   belongs_to :question
@@ -24,6 +25,7 @@ class UserQuestion < ActiveRecord::Base
       puts "************************************************"
     else
       puts "Sorry! That's incorrect."
+      puts "The correct answer is #{(self.question.choices.find {|choice| choice.correct == true}).name}"
       puts "************************************************"
     end
   end

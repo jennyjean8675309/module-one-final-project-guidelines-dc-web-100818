@@ -1,3 +1,5 @@
+require 'colorize'
+
 class TriviaGame
   def initialize
     @difficulty = "easy"
@@ -23,7 +25,8 @@ class TriviaGame
     if edged.include?(@selected_category)
       begin_round
     else
-      puts "Sorry, that's not a valid choice"
+      puts "Sorry, that's not a valid choice".colorize(:red)
+      puts "Please enter a valid choice".colorize(:red)
       puts "************************************************"
       validate_category
     end
@@ -52,10 +55,11 @@ class TriviaGame
     if user_answer == "A" || user_answer == "B" || user_answer == "C" || user_answer == "D"
       @uq.tells_user_if_correct(user_answer)
       @uq.keep_score(user_answer)
-      puts "Your score is #{user.score}"
+      puts "Your score is #{user.score}".colorize(:blue)
       puts "************************************************"
     else
-      puts "Sorry, that choice is not valid."
+      puts "Sorry, that choice is not valid.".colorize(:red)
+      puts "Please enter a valid answer.".colorize(:red)
       puts "************************************************"
       validate_answer
     end
@@ -89,21 +93,28 @@ class TriviaGame
       validate_answer
     end
     if won?
-      puts font.write("Congrats! You Won!")
+      puts font.write("Congrats! You Won!").colorize(:blue)
     elsif lost?
-      puts font.write("Sorry, Game Over.")
+      puts font.write("Sorry, Game Over.").colorize(:red)
     end
     leaderboard
   end
 
   def leaderboard
     font = TTY::Font.new(:doom)
-    puts "***************************************************************************************************************************************************************"
-    puts font.write("TRIVIA GAME LEADERBOARD:")
-    puts "***************************************************************************************************************************************************************"
+    puts "***************************************************************************************************************************************************************".colorize(:blue)
+    puts font.write("TRIVIA GAME LEADERBOARD:").colorize(:blue)
+    puts "***************************************************************************************************************************************************************".colorize(:blue)
     leaders = User.all.max_by(3) { |user| user.score }
-    leaders.each do |user|
-      puts font.write("#{user.name}")
+    if leaders.length == 1
+      puts "1. #{leaders[0].name}".colorize(:blue)
+    elsif leaders.length == 2
+      puts "1. #{leaders[0].name}".colorize(:blue)
+      puts "2. #{leaders[1].name}".colorize(:blue)
+    elsif leaders.length == 3
+      puts "1. #{leaders[0].name}".colorize(:blue)
+      puts "2. #{leaders[1].name}".colorize(:blue)
+      puts "3. #{leaders[2].name}".colorize(:blue)
     end
   end
 

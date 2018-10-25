@@ -13,3 +13,9 @@ Trivia Game CLI
       - "require_all"
       - "rest-client"
       - "rspec"
+
+  Credits
+  - Trivia API Database:
+    https://opentdb.com/api_config.php
+  - Jennifer Ingram
+  - Michael Kim

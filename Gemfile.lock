@@ -14,6 +14,7 @@ GEM
       tzinfo (~> 1.1)
     arel (7.1.4)
     coderay (1.1.1)
+    colorize (0.8.1)
     concurrent-ruby (1.0.5)
     diff-lcs (1.3)
     domain_name (0.5.20180417)
@@ -27,6 +28,7 @@ GEM
     mime-types-data (3.2018.0812)
     minitest (5.10.1)
     netrc (0.11.0)
+    paint (2.0.1)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -74,6 +76,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  colorize
+  paint
   pry
   require_all
   rest-client

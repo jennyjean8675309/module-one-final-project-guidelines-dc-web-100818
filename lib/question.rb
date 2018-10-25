@@ -1,6 +1,6 @@
 require_relative './api_communicator.rb'
 require 'pry'
-
+require 'colorize'
 
 class Question < ActiveRecord::Base
   belongs_to :category
@@ -8,19 +8,24 @@ class Question < ActiveRecord::Base
   has_many :user_questions
   has_many :users, through: :user_questions
 
-  def self.ask_question
-    self.all.sample
-  end
-
   def randomized_choices
     @rand
   end
 
+  def self.normalize_questions
+    self.all.each do |question|
+      question.question.gsub(/[&#039;]/, "''")
+      question.question.gsub(/[&quot;]/, '"')
+      question.question.gsub(/[Llanfair&shy;pwllgwyngyll&shy;gogery&shy;chwyrn&shy;drobwll&shy;llan&shy;tysilio&shy;gogo&shy;goch]/, "Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch")
+    end
+  end
+
   def format_choices
-    puts "A. #{@rand["A"].name}"
-    puts "B. #{@rand["B"].name}"
-    puts "C. #{@rand["C"].name}"
-    puts "D. #{@rand["D"].name}"
+    puts "Please select an answer: A, B, C, or D"
+    puts "A #{@rand["A"].name}"
+    puts "B #{@rand["B"].name}"
+    puts "C #{@rand["C"].name}"
+    puts "D #{@rand["D"].name}"
     puts "************************************************"
   end
 
@@ -49,8 +54,6 @@ class Question < ActiveRecord::Base
   end
 
   def self.give_user_question(input, difficulty)
-    q = self.questions_by_difficulty(input,difficulty).sample
+    self.questions_by_difficulty(input,difficulty).sample
   end
 end
-
-0
