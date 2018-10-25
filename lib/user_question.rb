@@ -21,8 +21,10 @@ class UserQuestion < ActiveRecord::Base
   def tells_user_if_correct(user_input)
     if self.validate_user_input(user_input) == true
       puts "Good job!  You got that one right!"
+      puts "************************************************"
     else
       puts "Sorry! That's incorrect."
+      puts "************************************************"
     end
   end
 end

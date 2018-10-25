@@ -21,6 +21,7 @@ class Question < ActiveRecord::Base
     puts "B. #{@rand["B"].name}"
     puts "C. #{@rand["C"].name}"
     puts "D. #{@rand["D"].name}"
+    puts "************************************************"
   end
 
   def connect_letter_to_choice

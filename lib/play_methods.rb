@@ -5,12 +5,14 @@ class TriviaGame
 
   def start_game
     puts "Welcome! Please enter your name."
+    puts "************************************************"
     user_name = gets.chomp
     @user = User.create(name: user_name)
   end
 
   def get_category
     puts "Hi #{@user.name}! Please choose a category:"
+    puts "************************************************"
     Category.output_categories
   end
 
@@ -22,6 +24,7 @@ class TriviaGame
       begin_round
     else
       puts "Sorry, that's not a valid choice"
+      puts "************************************************"
       validate_category
     end
   end
@@ -33,6 +36,7 @@ class TriviaGame
     else
       @uq = UserQuestion.create(user: @user, question: q)
       @user.user_questions << @uq
+      puts "************************************************"
       puts q.question
       q.connect_letter_to_choice
       puts q.format_choices
@@ -49,8 +53,10 @@ class TriviaGame
       @uq.tells_user_if_correct(user_answer)
       @uq.keep_score(user_answer)
       puts "Your score is #{user.score}"
+      puts "************************************************"
     else
       puts "Sorry, that choice is not valid."
+      puts "************************************************"
       validate_answer
     end
   end
@@ -92,7 +98,9 @@ class TriviaGame
 
   def leaderboard
     font = TTY::Font.new(:doom)
+    puts "***************************************************************************************************************************************************************"
     puts font.write("TRIVIA GAME LEADERBOARD:")
+    puts "***************************************************************************************************************************************************************"
     leaders = User.all.max_by(3) { |user| user.score }
     leaders.each do |user|
       puts font.write("#{user.name}")

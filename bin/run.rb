@@ -4,7 +4,6 @@ game = TriviaGame.new
 game.play
 
 
-
 # #Begins Round 1 (easy)
 # difficulty = "easy"
 # puts "Hi #{user_name}, choose a category:"

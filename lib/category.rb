@@ -8,5 +8,4 @@ class Category < ActiveRecord::Base
       puts category.name
     end
   end
-
 end
