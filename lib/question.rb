@@ -11,21 +11,27 @@ class Question < ActiveRecord::Base
     self.all.sample
   end
 
-  def shuffle_choices
-    shuffled_choices = self.choices.sort_by { rand }
-    self.choices = shuffled_choices
-    self.save
+  def randomized_choices
+    @rand
   end
 
   def format_choices
-    puts "A. #{self.choices[0].name}"
-    puts "B. #{self.choices[1].name}"
-    puts "C. #{self.choices[2].name}"
-    puts "D. #{self.choices[3].name}"
+    puts "A. #{@rand["A"].name}"
+    puts "B. #{@rand["B"].name}"
+    puts "C. #{@rand["C"].name}"
+    puts "D. #{@rand["D"].name}"
   end
 
   def connect_letter_to_choice
-    {"A" => self.choices[0], "B" => self.choices[1], "C" => self.choices[2], "D" => self.choices[3] }
+    num = [0, 1, 2, 3]
+    rand1 = num.sample
+    num.delete(rand1)
+    rand2 = num.sample
+    num.delete(rand2)
+    rand3 = num.sample
+    num.delete(rand3)
+    rand4 = num[0]
+    @rand = {"A" => self.choices[rand1], "B" => self.choices[rand2], "C" => self.choices[rand3], "D" => self.choices[rand4] }
   end
 
   def correct_answer
@@ -42,8 +48,6 @@ class Question < ActiveRecord::Base
 
   def self.give_user_question(input, difficulty)
     q = self.questions_by_difficulty(input,difficulty).sample
-    q.shuffle_choices
-    q
   end
 end
 

@@ -21,6 +21,7 @@ class TriviaGame
       begin_round
     else
       puts q.question
+      q.connect_letter_to_choice
       puts q.format_choices
       @uq = UserQuestion.create(user: @user, question: q)
       @user.user_questions << @uq

@@ -5,8 +5,8 @@ class UserQuestion < ActiveRecord::Base
   belongs_to :user
 
   def validate_user_input(user_input)
-    quest_hash = self.question.connect_letter_to_choice
-    quest_hash[user_input].correct
+    user_answer = self.question.randomized_choices[user_input]
+    user_answer == self.question.correct_answer
   end
 
   def keep_score(user_input)
