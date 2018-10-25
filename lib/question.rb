@@ -1,6 +1,7 @@
 require_relative './api_communicator.rb'
 require 'pry'
 
+
 class Question < ActiveRecord::Base
   belongs_to :category
   has_many :choices
