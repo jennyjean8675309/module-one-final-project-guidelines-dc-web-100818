@@ -13,7 +13,7 @@ class TriviaGame
   end
 
   def get_category
-    puts "Hi #{@user.name}! Please choose a category:"
+    puts "Hi #{@user.name}! Please choose a category by name:"
     puts "************************************************"
     Category.output_categories
   end
@@ -79,7 +79,7 @@ class TriviaGame
   end
 
   def lost?
-    @user.user_questions.length == 7
+    @user.user_questions.length == 2
   end
 
   def over?
@@ -96,27 +96,22 @@ class TriviaGame
     if won?
       puts font.write("Congrats! You Won!").colorize(:blue)
     elsif lost?
-      puts "Sorry, Game Over.".colorize(:red)
+      puts "Sorry, try again".colorize(:red)
+      puts "Game Over".colorize(:red)
     end
     leaderboard
   end
 
   def leaderboard
-    font = TTY::Font.new(:doom)
+    font = TTY::Font.new(:standard)
     puts "***************************************************************************************************************************************************************".colorize(:blue)
     puts font.write("TRIVIA GAME LEADERBOARD:").colorize(:blue)
     puts "***************************************************************************************************************************************************************".colorize(:blue)
     leaders = User.all.max_by(3) { |user| user.score }
-    if leaders.length == 1
-      puts "1. #{leaders[0].name}".colorize(:blue)
-    elsif leaders.length == 2
-      puts "1. #{leaders[0].name}".colorize(:blue)
-      puts "2. #{leaders[1].name}".colorize(:blue)
-    elsif leaders.length == 3
-      puts "1. #{leaders[0].name}".colorize(:blue)
-      puts "2. #{leaders[1].name}".colorize(:blue)
-      puts "3. #{leaders[2].name}".colorize(:blue)
-    end
+    leaders.each_with_index {|leader, index|
+      puts "#{index + 1}. #{leader.name} - Score:#{leader.score}".colorize(:blue)
+    }
+
   end
 
   def play
