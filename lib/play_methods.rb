@@ -120,19 +120,19 @@ class TriviaGame
   end
 
   def advance_user
-    if @user.score >= 2 && @user.score < 3
+    if @user.score >= 1 && @user.score < 2
       @difficulty = "medium"
-    elsif @user.score >=3 && @user.score < 4
+    elsif @user.score >=2 && @user.score < 3
       @difficulty = "hard"
     end
   end
 
   def won?
-    @user.score == 5
+    @user.score == 3
   end
 
   def lost?
-    @user.user_questions.length == 7
+    @user.user_questions.length == 5
   end
 
   def over?
@@ -171,7 +171,7 @@ class TriviaGame
   end
 
   def loserboard
-    puts "*".colorize(:blue) * 150 
+    puts "*".colorize(:blue) * 150
     puts "\u{1f44e} LOSER Board \u{1f44e}"
     puts "1. Mike - Score: -10".colorize(:blue)
   end
