@@ -10,30 +10,43 @@ class TriviaGame
     puts "************************************************"
     user_name = gets.chomp
     @user = User.create(name: user_name)
+    cls
+    puts "Hi #{user.name}! Welcome to TriviaGame!"
+    puts "Directions:".colorize(:blue)
+    puts "Choose a category before each round. Enter your answer as a letter: A, B, C, or D. If you'd like to quit during the game, you may enter 'quit' or 'exit'.".colorize(:blue)
+    puts "If you answer enough questions correctly in the allotted question limit, you win! Good luck!".colorize(:blue)
   end
+
+
+  # def get_category
+  #   puts "Hi #{@user.name}! Please choose a category by name:"
+  #   puts "************************************************"
+  #   Category.output_categories
+  # end
+
+  # def validate_category
+  #   get_category
+  #   @selected_category = gets.chomp.downcase
+  #   edged = Category.all.collect do |cat| cat.name.downcase end
+  #   if edged.include?(@selected_category)
+  #     begin_round
+  #   else
+  #     puts "Sorry, that's not a valid choice".colorize(:red)
+  #     puts "Please enter a valid choice".colorize(:red)
+  #     puts "************************************************"
+  #     validate_category
+  #   end
+  # end
 
   def get_category
-    puts "Hi #{@user.name}! Please choose a category by name:"
+    prompt = TTY::Prompt.new
+    cats = Category.all.collect do |cat| cat.name end
+    @selected = prompt.select("Please choose a category:", cats)
     puts "************************************************"
-    Category.output_categories
-  end
-
-  def validate_category
-    get_category
-    @selected_category = gets.chomp.downcase
-    edged = Category.all.collect do |cat| cat.name.downcase end
-    if edged.include?(@selected_category)
-      begin_round
-    else
-      puts "Sorry, that's not a valid choice".colorize(:red)
-      puts "Please enter a valid choice".colorize(:red)
-      puts "************************************************"
-      validate_category
-    end
   end
 
   def begin_round
-      q = Question.give_user_question(@selected_category, @difficulty)
+      q = Question.give_user_question(@selected, @difficulty)
     if @user.questions.include?(q)
       begin_round
     else
@@ -58,6 +71,8 @@ class TriviaGame
       @uq.keep_score(user_answer)
       puts font.write("Your score is #{user.score}").colorize(:blue)
       puts "************************************************"
+    elsif user_answer = "EXIT" || user_answer = "QUIT"
+        exit
     else
       puts "Sorry, that choice is not valid.".colorize(:red)
       puts "Please enter a valid answer.".colorize(:red)
@@ -69,7 +84,7 @@ class TriviaGame
   def advance_user
     if @user.score >= 2 && @user.score < 3
       @difficulty = "medium"
-    elsif @user.score >=3&& @user.score < 4
+    elsif @user.score >=3 && @user.score < 4
       @difficulty = "hard"
     end
   end
@@ -79,7 +94,7 @@ class TriviaGame
   end
 
   def lost?
-    @user.user_questions.length == 2
+    @user.user_questions.length == 7
   end
 
   def over?
@@ -90,7 +105,9 @@ class TriviaGame
     font = TTY::Font.new(:standard)
     while over? != true
       advance_user
-      validate_category
+      # validate_category
+      get_category #
+      begin_round
       validate_answer
     end
     if won?
@@ -102,6 +119,7 @@ class TriviaGame
     leaderboard
   end
 
+
   def leaderboard
     font = TTY::Font.new(:standard)
     puts "***************************************************************************************************************************************************************".colorize(:blue)
@@ -111,7 +129,10 @@ class TriviaGame
     leaders.each_with_index {|leader, index|
       puts "#{index + 1}. #{leader.name} - Score:#{leader.score}".colorize(:blue)
     }
+  end
 
+  def cls
+  puts "\e[H\e[2J"
   end
 
   def play
