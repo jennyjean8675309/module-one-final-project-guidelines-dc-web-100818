@@ -51,11 +51,12 @@ class TriviaGame
   end
 
   def validate_answer
+    font = TTY::Font.new(:standard)
     user_answer = gets.chomp.upcase
     if user_answer == "A" || user_answer == "B" || user_answer == "C" || user_answer == "D"
       @uq.tells_user_if_correct(user_answer)
       @uq.keep_score(user_answer)
-      puts "Your score is #{user.score}".colorize(:blue)
+      puts font.write("Your score is #{user.score}").colorize(:blue)
       puts "************************************************"
     else
       puts "Sorry, that choice is not valid.".colorize(:red)
@@ -66,19 +67,19 @@ class TriviaGame
   end
 
   def advance_user
-    if @user.score >= 1 && @user.score < 2
+    if @user.score >= 2 && @user.score < 3
       @difficulty = "medium"
-    elsif @user.score >=2 && @user.score < 3
+    elsif @user.score >=3&& @user.score < 4
       @difficulty = "hard"
     end
   end
 
   def won?
-    @user.score == 3
+    @user.score == 5
   end
 
   def lost?
-    @user.user_questions.length == 4
+    @user.user_questions.length == 7
   end
 
   def over?
@@ -86,7 +87,7 @@ class TriviaGame
   end
 
   def round_loop
-    font = TTY::Font.new(:doom)
+    font = TTY::Font.new(:standard)
     while over? != true
       advance_user
       validate_category
@@ -95,7 +96,7 @@ class TriviaGame
     if won?
       puts font.write("Congrats! You Won!").colorize(:blue)
     elsif lost?
-      puts font.write("Sorry, Game Over.").colorize(:red)
+      puts "Sorry, Game Over.".colorize(:red)
     end
     leaderboard
   end

@@ -1,7 +1,5 @@
 require_relative '../config/environment'
 
-Question.normalize_questions
-
 game = TriviaGame.new
 game.play
 

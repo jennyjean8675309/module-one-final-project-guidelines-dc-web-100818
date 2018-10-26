@@ -8,16 +8,12 @@ class Question < ActiveRecord::Base
   has_many :user_questions
   has_many :users, through: :user_questions
 
-  def randomized_choices
-    @rand
+  def self.ask_question
+    self.all.sample
   end
 
-  def self.normalize_questions
-    self.all.each do |question|
-      question.question.gsub(/[&#039;]/, "''")
-      question.question.gsub(/[&quot;]/, '"')
-      question.question.gsub(/[Llanfair&shy;pwllgwyngyll&shy;gogery&shy;chwyrn&shy;drobwll&shy;llan&shy;tysilio&shy;gogo&shy;goch]/, "Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch")
-    end
+  def randomized_choices
+    @rand
   end
 
   def format_choices

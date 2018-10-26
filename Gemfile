@@ -10,3 +10,4 @@ gem "rspec"
 gem "tty-font"
 gem 'paint'
 gem 'colorize'
+gem 'tty-prompt'
