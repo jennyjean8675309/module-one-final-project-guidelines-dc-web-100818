@@ -11,12 +11,51 @@ class TriviaGame
     user_name = gets.chomp
     @user = User.create(name: user_name)
     cls
+    if user_name == "Dr. Seuss"
+        puts "
+              .;''-.
+            .' |    `._
+           /`  ;       `'.
+         .'     \\         \\
+        ,'\\|    `|         |
+        | -'_     \\ `'.__,J
+       ;'   `.     `'.__.'
+       |      `'-.___ ,'
+       '-,           /
+       |.-`-.______-|
+       }      __.--'L
+       ;   _,-  _.-'`\\         ___
+       `7-;'   '  _,,--._  ,-'`__ `.
+        |/      ,'-     .7'.-'--.7 |        _.-'
+        ;     ,'      .' .'  .-. \\/       .'
+         ;   /       / .'.-     ` |__   .'
+          \\ |      .' /  |    \\_)-   `'/   _.-'``
+           _,.--../ .'     \\_) '`_      \\'`
+         '`f-'``'.`\\;;'    ''`  '-`      |
+            \\`.__. ;;;,   )              /
+             `-._,|;;;,, /\\            ,'
+              / /<_;;;;'   `-._    _,-'
+             | '- /;;;;;,      `t'` \\. I like nonsence.
+             `'-'`_.|,';;;,      '._/| It wakes up the brain cells!
+             ,_.-'  \\ |;;;;;    `-._/
+                   / `;\\ |;;;,  `'     - Theodor Seuss Geisel -
+                 .'     `'`\\;;, /
+                '           ;;;'|
+                    .--.    ;.:`\\    _.--,
+                   |    `'./;' _ '_.'     |
+                    \\_     `'7f `)       /
+                    |`   _.-'`t-'`'-.,__.'
+                    `'-'`/;;  | |   \\ mx
+                        ;;;  ,' |    `
+                            /   '
+      "
+    end 
+
     puts "Hi #{user.name}! Welcome to TriviaGame!"
     puts "Directions:".colorize(:blue)
     puts "Choose a category before each round. Enter your answer as a letter: A, B, C, or D. If you'd like to quit during the game, you may enter 'quit' or 'exit'.".colorize(:blue)
     puts "If you answer enough questions correctly in the allotted question limit, you win! Good luck!".colorize(:blue)
   end
-
 
   # def get_category
   #   puts "Hi #{@user.name}! Please choose a category by name:"
@@ -132,11 +171,12 @@ class TriviaGame
   end
 
   def cls
-  puts "\e[H\e[2J"
+    puts "\e[H\e[2J"
   end
 
   def play
     start_game
     round_loop
   end
+
 end

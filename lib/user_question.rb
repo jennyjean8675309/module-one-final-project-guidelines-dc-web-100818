@@ -24,8 +24,8 @@ class UserQuestion < ActiveRecord::Base
       puts "Good job!  You got that one right!"
       puts "************************************************"
     else
-      puts "Sorry! That's incorrect."
-      puts "The correct answer is #{(self.question.choices.find {|choice| choice.correct == true}).name}"
+      puts "Sorry! That's incorrect.".colorize(:red)
+      puts "The correct answer is #{(self.question.choices.find {|choice| choice.correct == true}).name}".colorize(:red)
       puts "************************************************"
     end
   end
