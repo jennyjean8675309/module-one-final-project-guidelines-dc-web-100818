@@ -49,7 +49,7 @@ class TriviaGame
                         ;;;  ,' |    `
                             /   '
       "
-    end 
+    end
 
     puts "Hi #{user.name}! Welcome to TriviaGame!"
     puts "Directions:".colorize(:blue)
@@ -156,6 +156,7 @@ class TriviaGame
       puts "Game Over".colorize(:red)
     end
     leaderboard
+    loserboard
   end
 
 
@@ -166,8 +167,14 @@ class TriviaGame
     puts "***************************************************************************************************************************************************************".colorize(:blue)
     leaders = User.all.max_by(3) { |user| user.score }
     leaders.each_with_index {|leader, index|
-      puts "#{index + 1}. #{leader.name} - Score:#{leader.score}".colorize(:blue)
+      puts "#{index + 1}. #{leader.name} - Score: #{leader.score}".colorize(:blue)
     }
+  end
+
+  def loserboard
+    puts "***************************************************************************************************************************************************************".colorize(:blue)
+    puts "LOSER Board"
+    puts "1. Mike - Score: -10".colorize(:blue)
   end
 
   def cls

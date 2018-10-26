@@ -16,6 +16,24 @@ class Question < ActiveRecord::Base
     @rand
   end
 
+  def self.fix_question_format
+    self.all.each do |q|
+      q.question.gsub!('&quot;', '"')
+      q.question.gsub!("&aacute;", "á")
+      q.question.gsub!("&ntilde;", "ñ")
+      q.question.gsub!("&#039;", "'")
+      q.question.gsub!("&uuml;", "ü")
+      q.question.gsub!("&oacute;", "ó")
+      q.question.gsub!("&ouml;", "ö")
+      q.question.gsub!("&Ouml;", "Ö")
+      q.question.gsub!("&eacute;", "é")
+      q.question.gsub!("&shy;", "")
+      q.question.gsub!("&amp;", "&")
+      q.question.gsub!("&deg;", "°")
+      q.save
+    end
+  end
+
   def format_choices
     puts "Please select an answer: A, B, C, or D"
     puts "A #{@rand["A"].name}"
