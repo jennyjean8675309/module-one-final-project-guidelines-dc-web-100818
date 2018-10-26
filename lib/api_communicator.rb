@@ -49,7 +49,7 @@ end
 
 def create_questions
   TRIVIA.each do |question_hash|
-    Question.find_or_create_by(question: question_hash["question"], category: connect_category_to_instance[question_hash["category"]], difficulty: question_hash["difficulty"])
+    Question.create(question: question_hash["question"], category: connect_category_to_instance[question_hash["category"]], difficulty: question_hash["difficulty"])
   end
 end
 
@@ -57,11 +57,10 @@ def find_questions(string)
   Question.all.find_by(question: string)
 end
 
-
 def create_correct_choices
   TRIVIA.each do |question_hash|
     my_quest = find_questions(question_hash["question"])
-    Choice.find_or_create_by name: question_hash["correct_answer"], correct: true, question: my_quest
+    Choice.create name: question_hash["correct_answer"], correct: true, question: my_quest
   end
 end
 
@@ -72,5 +71,3 @@ def create_incorrect_choices
     end
   end
 end
-
-0

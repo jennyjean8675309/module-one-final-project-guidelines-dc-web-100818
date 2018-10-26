@@ -8,3 +8,7 @@ gem "require_all"
 gem "rest-client"
 gem "rspec"
 gem 'database_cleaner'
+gem "tty-font"
+gem 'paint'
+gem 'colorize'
+gem 'tty-prompt'

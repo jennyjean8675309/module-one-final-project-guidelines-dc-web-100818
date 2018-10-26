@@ -1,6 +1,6 @@
 require_relative './api_communicator.rb'
 require 'pry'
-
+require 'colorize'
 
 class Question < ActiveRecord::Base
   belongs_to :category
@@ -16,11 +16,31 @@ class Question < ActiveRecord::Base
     @rand
   end
 
+  def self.fix_question_format
+    self.all.each do |q|
+      q.question.gsub!('&quot;', '"')
+      q.question.gsub!("&aacute;", "á")
+      q.question.gsub!("&ntilde;", "ñ")
+      q.question.gsub!("&#039;", "'")
+      q.question.gsub!("&uuml;", "ü")
+      q.question.gsub!("&oacute;", "ó")
+      q.question.gsub!("&ouml;", "ö")
+      q.question.gsub!("&Ouml;", "Ö")
+      q.question.gsub!("&eacute;", "é")
+      q.question.gsub!("&shy;", "")
+      q.question.gsub!("&amp;", "&")
+      q.question.gsub!("&deg;", "°")
+      q.save
+    end
+  end
+
   def format_choices
-    puts "A. #{@rand["A"].name}"
-    puts "B. #{@rand["B"].name}"
-    puts "C. #{@rand["C"].name}"
-    puts "D. #{@rand["D"].name}"
+    puts "Please select an answer: A, B, C, or D"
+    puts "A #{@rand["A"].name}"
+    puts "B #{@rand["B"].name}"
+    puts "C #{@rand["C"].name}"
+    puts "D #{@rand["D"].name}"
+    puts "*"*50
   end
 
   def connect_letter_to_choice
@@ -40,7 +60,7 @@ class Question < ActiveRecord::Base
   end
 
   def self.questions_by_category(input)
-    self.all.select { |q| q.category.name.downcase == input }
+    self.all.select { |q| q.category.name == input }
   end
 
   def self.questions_by_difficulty(input, difficulty)
@@ -48,8 +68,6 @@ class Question < ActiveRecord::Base
   end
 
   def self.give_user_question(input, difficulty)
-    q = self.questions_by_difficulty(input,difficulty).sample
+    self.questions_by_difficulty(input,difficulty).sample
   end
 end
-
-0
