@@ -6,8 +6,7 @@ class TriviaGame
   end
 
   def start_game
-    puts "Welcome! Please enter your name."
-    puts "************************************************"
+    puts "Welcome! Please enter your name.".center(76, '*')
     user_name = gets.chomp
     @user = User.create(name: user_name)
     cls
@@ -51,7 +50,8 @@ class TriviaGame
       "
     end
 
-    puts "Hi #{user.name}! Welcome to TriviaGame!"
+    puts "Hi #{user.name}! Welcome to \u{1f63b} Ultimate Trivia Challenge!!!\u{1f63b}"
+    puts "*"*50
     puts "Directions:".colorize(:blue)
     puts "Choose a category before each round. Enter your answer as a letter: A, B, C, or D. If you'd like to quit during the game, you may enter 'quit' or 'exit'.".colorize(:blue)
     puts "If you answer enough questions correctly in the allotted question limit, you win! Good luck!".colorize(:blue)
@@ -81,7 +81,7 @@ class TriviaGame
     prompt = TTY::Prompt.new
     cats = Category.all.collect do |cat| cat.name end
     @selected = prompt.select("Please choose a category:", cats)
-    puts "************************************************"
+    puts "*"*50
   end
 
   def begin_round
@@ -91,7 +91,6 @@ class TriviaGame
     else
       @uq = UserQuestion.create(user: @user, question: q)
       @user.user_questions << @uq
-      puts "************************************************"
       puts q.question
       q.connect_letter_to_choice
       puts q.format_choices
@@ -109,13 +108,13 @@ class TriviaGame
       @uq.tells_user_if_correct(user_answer)
       @uq.keep_score(user_answer)
       puts font.write("Your score is #{user.score}").colorize(:blue)
-      puts "************************************************"
-    elsif user_answer = "EXIT" || user_answer = "QUIT"
-        exit
+      puts "*"*50
+    elsif user_answer == "EXIT" || user_answer == "QUIT"
+      exit
     else
       puts "Sorry, that choice is not valid.".colorize(:red)
       puts "Please enter a valid answer.".colorize(:red)
-      puts "************************************************"
+      puts "*"*50
       validate_answer
     end
   end
@@ -152,7 +151,7 @@ class TriviaGame
     if won?
       puts font.write("Congrats! You Won!").colorize(:blue)
     elsif lost?
-      puts "Sorry, try again".colorize(:red)
+      puts "\u{1f62d} Sorry, try again \u{1f62d}".colorize(:red)
       puts "Game Over".colorize(:red)
     end
     leaderboard
@@ -162,18 +161,18 @@ class TriviaGame
 
   def leaderboard
     font = TTY::Font.new(:standard)
-    puts "***************************************************************************************************************************************************************".colorize(:blue)
+    puts "*".colorize(:blue) * 150
     puts font.write("TRIVIA GAME LEADERBOARD:").colorize(:blue)
-    puts "***************************************************************************************************************************************************************".colorize(:blue)
+    puts "*".colorize(:blue) * 150
     leaders = User.all.max_by(3) { |user| user.score }
     leaders.each_with_index {|leader, index|
-      puts "#{index + 1}. #{leader.name} - Score: #{leader.score}".colorize(:blue)
+      puts "\u{1f396} #{index + 1}. #{leader.name} - Score: #{leader.score}".colorize(:blue)
     }
   end
 
   def loserboard
-    puts "***************************************************************************************************************************************************************".colorize(:blue)
-    puts "LOSER Board"
+    puts "*".colorize(:blue) * 150 
+    puts "\u{1f44e} LOSER Board \u{1f44e}"
     puts "1. Mike - Score: -10".colorize(:blue)
   end
 

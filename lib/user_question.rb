@@ -21,12 +21,12 @@ class UserQuestion < ActiveRecord::Base
 
   def tells_user_if_correct(user_input)
     if self.validate_user_input(user_input) == true
-      puts "Good job!  You got that one right!"
-      puts "************************************************"
+      puts "\u{1f60e} Good job!  You got that one right! \u{1f60e}"
+      puts "*"*50
     else
-      puts "Sorry! That's incorrect.".colorize(:red)
+      puts "\u{1f61e} Sorry! That's incorrect. \u{1f61e}".colorize(:red)
       puts "The correct answer is #{(self.question.choices.find {|choice| choice.correct == true}).name}".colorize(:red)
-      puts "************************************************"
+      puts "*"*50
     end
   end
 end
